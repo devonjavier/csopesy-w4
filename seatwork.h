@@ -1,25 +1,26 @@
 #include <string>
 #include <ctime>
 #include <vector>
+#include <unordered_map>
 
 // a process changes states
 class Process {
     // # 1 
-    float cpu_util;
-    std::string p_name;
-    int pid;
-    std::time_t p_time;
-    int p_counter;
-    int cores_used;
-    int corse_total;
-    std::vector<std::string> p_instructions;
+    int pid;                                    // Process ID
+    float cpu_util;                             // CPU Utilization Percentage                            
+    std::string p_name;                         // Process name
+    std::time_t p_time;                         // Process Time (Time Created)
+    int p_counter;                              // Program Counter (Current Instruction)
+    int cores_used;                             // no. of cores used
+    int corse_total;                            // total no. of cores
+    std::vector<std::string> p_instructions;    // instruction history
 
     Process(std::string name, int id, int cores) 
         : p_name(name), pid(id), cores_used(cores), corse_total(cores), p_counter(0), cpu_util(0.0) {
         p_time = std::time(nullptr);
     }
 
-
+    // #1 
     int execute_instruction(std::string instruction) const {
         // used to take new input and then add it to the instruction vector
         // determine what to do with insturction 
@@ -48,36 +49,34 @@ class Process {
 
 
     // #2
-    std::string get_instruction(int index) const {
+    std::string get_current_instruction() const {
     //     used to get the instruction at a specific index
     //     if (index < 0 || index >= p_instructions.size()) {
     //         return "N/A";
     //     }
-    //     return p_instructions[index];
+    //     return p_instructions[p_counter];
     }
 };
 
 
 class ProcessManager{
     private:
-    std::vector<Process> processes;
+    std::unordered_map<int, Process> processMap;
 
     public:
 
-    // #3
+    // #3 & 4
     void add_process(const Process& process) {
-        // processes.push_back(process);
-    };
+        // processes.insert({process.pid, process});  
+    }
 
     // #4
     Process* getProcessByPid(int pid) {
-        // for (auto& process : processes) {
-        //     if (process.pid == pid) {
-        //         return &process;
-        //     }
+        // auto it = processMap.find(pid);
+        // if (it != processMap.end()) {
+        //     return &it->second;
         // }
         // return nullptr; // Not found
     }
-
 
 };
