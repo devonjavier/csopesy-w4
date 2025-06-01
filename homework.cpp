@@ -5,7 +5,7 @@
 #include <vector>
 
 struct Process {
-    int gpu;
+    int gpu;                    
     int gi;
     int ci;
     int pid;
@@ -25,36 +25,36 @@ struct Process {
     }
 
     void printProcess() const {
-    int gpu_width = 6;
-    int gi_width = 5;
-    int ci_width = 10;
-    int pid_width = 6;
-    int type_width = 6;
-    int name_width = 42;
-    int memory_usage_width = 11;
+        int gpu_width = 6;
+        int gi_width = 5;
+        int ci_width = 10;
+        int pid_width = 6;
+        int type_width = 7;
+        int name_width = 42;
+        int memory_usage_width = 10;
 
-    std::string temp_name = name;
-    if (name.length() > name_width) {
-        temp_name = "..." + name.substr(name.length() - (name_width - 3)); // e.g. last 39 chars
+        std::string temp_name = name;
+        if (name.length() > name_width) {
+            temp_name = "..." + name.substr(name.length() - (name_width - 3)); // e.g. last 39 chars
+        }
+
+        std::ostringstream mem_ss;
+        if (gpu_memory_usage >= 0) {
+            mem_ss << std::fixed << std::setprecision(1) << gpu_memory_usage << "MiB";
+        } else {
+            mem_ss << "N/A";
+        }
+
+        std::cout << "|  "
+                << std::setw(gpu_width) << std::left << intOrNA(gpu)
+                << std::setw(gi_width) << std::left << intOrNA(gi)
+                << std::setw(ci_width) << std::left << intOrNA(ci)
+                << std::setw(pid_width) << std::left << pid
+                << std::setw(type_width) << std::left << type
+                << std::setw(name_width) << std::left << temp_name << std::right
+                << std::setw(memory_usage_width) << mem_ss.str()
+                << " |" << std::endl;
     }
-
-    std::ostringstream mem_ss;
-    if (gpu_memory_usage >= 0) {
-        mem_ss << std::fixed << std::setprecision(1) << gpu_memory_usage << "MiB";
-    } else {
-        mem_ss << "N/A";
-    }
-
-    std::cout << "|  "
-              << std::setw(gpu_width) << std::left << intOrNA(gpu)
-              << std::setw(gi_width) << std::left << intOrNA(gi)
-              << std::setw(ci_width) << std::left << intOrNA(ci)
-              << std::setw(pid_width) << std::left << pid
-              << std::setw(type_width) << std::left << type
-              << std::setw(name_width) << std::left << temp_name << std::right
-              << std::setw(memory_usage_width) << mem_ss.str()
-              << " |" << std::endl;
-}
 };
 
 std::vector<Process> processes1 = {
